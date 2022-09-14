@@ -27,7 +27,7 @@ void render() {
                 } else {
                         glColor3f(0.0, 0.0, 1.0);
                 }
-                glVertex2i(i, j);
+                glVertex2i(j, i);
                 n++;
         }}
         glEnd();
