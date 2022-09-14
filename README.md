@@ -9,10 +9,9 @@
 ### help:
 
 ```
-$ ./is2d -help
 is2d [OPTIONS] ...
 
-
+Spin Up: Green, Spin Down: Blue
 Simulates ising model on a 2d grid. with help of C & OpenGL
 
 Writen By: Rohn Chatterjee  (https://github.com/liupold)

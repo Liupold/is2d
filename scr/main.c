@@ -19,9 +19,7 @@ void render() {
         glBegin(GL_POINTS);
         int n = 0;
 
-        // iterate y up to 2*pi, i.e., 360 degree
-        // with small increment in angle as
-        // glVertex2i just draws a point on specified co-ordinate
+        // Up: Green, Down: Blue
         for (int i = 0; i < lat.r; i ++) {
         for (int j = 0; j < lat.c; j ++) {
                 if (lat.S[n] == 1) {
@@ -51,7 +49,7 @@ void display() {
 
 void help() {
         printf("is2d [OPTIONS] ...\n");
-        printf("\n\nSimulates ising model on a 2d grid. with help of C & OpenGL\n");
+        printf("\nSpin Up: Green, Spin Down: Blue\nSimulates ising model on a 2d grid. with help of C & OpenGL\n");
         printf("\nWriten By: Rohn Chatterjee  (https://github.com/liupold)\n\n");
 
         printf("-T <Float>\tSet simulation temperature. [default: 1]\n");
