@@ -1,5 +1,8 @@
 # is2d
 
+## Demo (YouTube):
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/4uOXUqEYe50/0.jpg)](http://www.youtube.com/watch?v=4uOXUqEYe50 "Video Title")
+
 ### dependencies: `OpenGL <GL/glut.h>`
 ### build : `make`
 
