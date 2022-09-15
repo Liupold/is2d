@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <time.h>
 #include<GL/glut.h>
 #include "ising-2d.h"
 
@@ -9,7 +10,7 @@ double global_H, global_J1, global_J2,
        global_h, global_T, global_beta, global_frame_time,
        global_dT;
 
-int global_dstep, global_fc, global_dF;
+int global_dstep, global_dF;
 
 int global_width = 1366, global_height = 768,
     global_row = 512, global_col = 512;
@@ -34,17 +35,30 @@ void render() {
         glFlush();
 }
 
-void display() {
+void display(int id) {
+        struct timespec start, end;
+        double dt = global_frame_time;
+
+        clock_gettime(CLOCK_MONOTONIC_RAW, &start);
         global_H = evolve_islat2d(lat, global_beta, global_dstep,
                         global_J1, global_J2, global_h, global_H);
-        render();
-        global_fc += 1;
-        if ((global_fc == global_dF) && (global_dT != 0)) {
+        if ((id == global_dF) && (global_dT != 0)) {
                 global_T += global_dT; global_beta = (1/global_T);
                 printf("Temp: %f\n\r", global_T);
-                global_fc = 0;
+                id = 0;
         }
-        glutTimerFunc(global_frame_time, display, 0);
+        clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+        render();
+        double delta_ms = ((end.tv_sec - start.tv_sec) * 1000 + (end.tv_nsec - start.tv_nsec) / 1000000);
+        if (delta_ms > global_frame_time) {
+                printf("Warning: Unable to maintain fps. [Reducing fps (%f)", 1000/global_frame_time);
+                global_frame_time *= 2;
+                global_dF *= 2;
+                printf("-> (%f)]\n", 1000/global_frame_time);
+        } else {
+                dt -= delta_ms;
+        }
+        glutTimerFunc(dt, display, id+1);
 }
 
 void help() {
@@ -56,10 +70,10 @@ void help() {
         printf("-j1 <Float>\tInteraction strength (left-right) [default: 1]\n");
         printf("-j2 <Float>\tInteraction strength (up-down) [default: 1]\n");
         printf("-h <Float>\tExternal Magnetic field interaction [default: 0]\n");
-        printf("-dS <Integer>\tNumber of steps per frame [default: 1000000]\n");
+        printf("-dS <Integer>\tNumber of steps per frame [default: 100000]\n");
         printf("-dT <Float>\tChange of temperature per dF [default: 0]\n");
-        printf("-dF <Integer>\tFrame Spacing [default: 10]\n");
-        printf("-fps <Float>\tFrames per second [default: 30]\n");
+        printf("-dF <Integer>\tFrame Spacing [default: 120]\n");
+        printf("-fps <Float>\tFrames per second [default: 60]\n");
         printf("-W <Integer>\tWidth of the window [default: 1366]\n");
         printf("-H <Integer>\tHeight of the window [default: 768]\n");
         printf("-R <Integer>\tNumber of row in lattice [default: 512]\n");
@@ -95,12 +109,12 @@ int main(int argc, char** argv) {
         // hamiltons param
         global_J1 = 1; global_J2 = 1; global_h = 0;
         global_H = ising2d_H(lat, global_J1, global_J2, global_h);
-        global_dstep = 1e6;
+        global_dstep = 1e5;
         global_T = 1;
-        global_frame_time=1000/30; // 30 fps
+        global_frame_time=1000/60; // 60 fps
 
         // change temp with step.
-        global_fc = 0; global_dF = 10;
+        global_dF = 10;
         global_dT = 0;
 
         if (argc >= 2) {
@@ -123,6 +137,7 @@ int main(int argc, char** argv) {
         glLoadIdentity();
         gluOrtho2D(0, global_row, 0, global_col);
 
-        glutDisplayFunc(display);
+        glutDisplayFunc(render);
+        glutTimerFunc(0, display, 0);
         glutMainLoop();
 }
