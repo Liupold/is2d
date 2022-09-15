@@ -12,8 +12,8 @@ double global_H, global_J1, global_J2,
 
 int global_dstep, global_dF;
 
-int global_width = 1366, global_height = 768,
-    global_row = 512, global_col = 512;
+int global_width = 500, global_height = 500,
+    global_row = 100, global_col = 100;
 
 void render() {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -74,10 +74,10 @@ void help() {
         printf("-dT <Float>\tChange of temperature per dF [default: 0]\n");
         printf("-dF <Integer>\tFrame Spacing [default: 120]\n");
         printf("-fps <Float>\tFrames per second [default: 60]\n");
-        printf("-W <Integer>\tWidth of the window [default: 1366]\n");
-        printf("-H <Integer>\tHeight of the window [default: 768]\n");
-        printf("-R <Integer>\tNumber of row in lattice [default: 512]\n");
-        printf("-C <Integer>\tNumber of column in lattice [default: 512]\n");
+        printf("-W <Integer>\tWidth of the window [default: 500]\n");
+        printf("-H <Integer>\tHeight of the window [default: 500]\n");
+        printf("-R <Integer>\tNumber of row in lattice [default: 100]\n");
+        printf("-C <Integer>\tNumber of column in lattice [default: 100]\n");
 }
 
 
