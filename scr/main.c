@@ -82,7 +82,6 @@ void help() {
 
 
 void config_load(int argc, char** argv) {
-        char* key;
         for (int i=0; i < argc; i++) {
                 if (strcmp(argv[i], "-j1") == 0){global_J1 = atof(argv[i+1]);i++;continue;};
                 if (strcmp(argv[i], "-j2") == 0){global_J2 = atof(argv[i+1]);i++;continue;};
