@@ -21,14 +21,14 @@ void render() {
         int n = 0;
 
         // Up: Green, Down: Blue
-        for (int i = 0; i < lat.r; i ++) {
-        for (int j = 0; j < lat.c; j ++) {
+        for (int j = 0; j < lat.r; j ++) {
+        for (int i = 0; i < lat.c; i ++) {
                 if (lat.S[n] == 1) {
                         glColor3f(0.0, 1.0, 0);
                 } else {
                         glColor3f(0.0, 0.0, 1.0);
                 }
-                glVertex2i(j, i);
+                glVertex2i(i, j);
                 n++;
         }}
         glEnd();
@@ -104,8 +104,6 @@ void config_load(int argc, char** argv) {
 
 
 int main(int argc, char** argv) {
-        lat = rand_islat2d(global_row, global_col);
-
         // hamiltons param
         global_J1 = 1; global_J2 = 1; global_h = 0;
         global_H = ising2d_H(lat, global_J1, global_J2, global_h);
@@ -121,6 +119,7 @@ int main(int argc, char** argv) {
                 config_load(argc, argv);
         }
         global_beta = 1/global_T;
+        lat = rand_islat2d(global_row, global_col);
 
         // init opengl
         glutInit(&argc, argv);
@@ -135,7 +134,7 @@ int main(int argc, char** argv) {
         glPointSize(5.0);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        gluOrtho2D(0, global_row, 0, global_col);
+        gluOrtho2D(0, global_col, global_row, 0);
 
         glutDisplayFunc(render);
         glutTimerFunc(0, display, 0);
