@@ -3,12 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-# define islat2d struct ising_2d_latice
-
-struct ising_2d_latice{
-        int8_t* S;
-        int r, c, N;
-};
+#include "ising-2d.h"
 
 void disp_islat2d(islat2d A) {
         int n = 0;
@@ -49,6 +44,9 @@ islat2d rand_islat2d(int r, int c) {
 
 void free_islat2d(islat2d Lat) {
         free(Lat.S);
+        Lat.N = 0;
+        Lat.r = 0;
+        Lat.c = 0;
 }
 
 void save_islat2d(islat2d A, char* filename) {
@@ -140,7 +138,7 @@ double evolve_islat2d(islat2d Lat, double beta, int steps,
                 Lat.S[i] *= -1; // try fliping
                 H_next = H_curr + ising2d_del_H(Lat, i, j1, j2, h);
 
-                if (H_next < H_curr) { // Del E < 0
+                if (H_next <= H_curr) { // Del E < 0
                         H_curr = H_next; // finalize the flip
                 } else { // Del E > 0
                         if ((double)rand() / (double)RAND_MAX

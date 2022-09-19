@@ -138,4 +138,5 @@ int main(int argc, char** argv) {
         glutDisplayFunc(render);
         glutTimerFunc(0, display, 0);
         glutMainLoop();
+        free_islat2d(lat);
 }

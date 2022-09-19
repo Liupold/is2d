@@ -1,7 +1,7 @@
 // Technical
 struct ising_2d_latice{
         int8_t* S;
-        int r, c, N;
+        int r, c, N, M;
 };
 # define islat2d struct ising_2d_latice
 
