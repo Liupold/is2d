@@ -1,12 +1,13 @@
 // Technical
 struct ising_2d_latice{
         int8_t* S;
-        int r, c, N, M;
+        int r, c, N;
 };
 # define islat2d struct ising_2d_latice
 
 void disp_islat2d(islat2d A);
 islat2d rand_islat2d(int r, int c);
+void islat2d_randomize(islat2d lat);
 void free_islat2d(islat2d Lat);
 void save_islat2d(islat2d A, char* filename);
 

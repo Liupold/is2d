@@ -27,7 +27,6 @@ void disp_islat2d(islat2d A) {
 
 
 islat2d rand_islat2d(int r, int c) {
-        srand(time(NULL));
         int N = r*c;
         int8_t* S = (int8_t*)calloc(N, sizeof(int8_t));
         for (int i=0; i<N; i++) {
@@ -40,6 +39,16 @@ islat2d rand_islat2d(int r, int c) {
 
         islat2d ret_LAT = {S, r, c, N};
         return ret_LAT;
+}
+
+void islat2d_randomize(islat2d lat) {
+        for (int i=0; i<lat.N; i++) {
+                if (rand()>(RAND_MAX/2)) {
+                        lat.S[i] = 1;
+                } else {
+                        lat.S[i] = -1;
+                }
+        }
 }
 
 void free_islat2d(islat2d Lat) {

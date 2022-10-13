@@ -10,7 +10,7 @@ double global_H, global_J1, global_J2,
        global_h, global_T, global_beta, global_frame_time,
        global_dT;
 
-int global_dstep, global_dF;
+int global_dstep, global_dF, global_SEED;
 
 int global_width = 500, global_height = 500,
     global_row = 100, global_col = 100;
@@ -78,6 +78,7 @@ void help() {
         printf("-H <Integer>\tHeight of the window [default: 500]\n");
         printf("-R <Integer>\tNumber of row in lattice [default: 100]\n");
         printf("-C <Integer>\tNumber of column in lattice [default: 100]\n");
+        printf("-Seed <Integer>\tRandom Seed [default: Unix epoc]\n");
 }
 
 
@@ -98,11 +99,13 @@ void config_load(int argc, char** argv) {
                 if (strcmp(argv[i], "-H") == 0){global_height = atoi(argv[i+1]);i++;continue;};
                 if (strcmp(argv[i], "-R") == 0){global_row = atoi(argv[i+1]);i++;continue;};
                 if (strcmp(argv[i], "-C") == 0){global_col = atoi(argv[i+1]);i++;continue;};
+                if (strcmp(argv[i], "-Seed") == 0){global_SEED = atoi(argv[i+1]);i++;continue;};
         }
 }
 
 
 int main(int argc, char** argv) {
+        global_SEED = time(NULL);
         // hamiltons param
         global_J1 = 1; global_J2 = 1; global_h = 0;
         global_H = ising2d_H(lat, global_J1, global_J2, global_h);
@@ -119,6 +122,7 @@ int main(int argc, char** argv) {
         }
         global_beta = 1/global_T;
         lat = rand_islat2d(global_row, global_col);
+        srand(global_SEED);
 
         // init opengl
         glutInit(&argc, argv);

@@ -26,16 +26,17 @@ double M_avg(islat2d lat, double beta, int MCsteps, double *H_prev) {
 
 
 int main() {
-        islat2d lat = rand_islat2d(100, 100);
+        islat2d lat = rand_islat2d(80, 80);
         double H_val = ising2d_H(lat, 1, 1, 0);
-        double T = 1, Tmax = 5, dT = 0.01;
+        double T = 2, Tmax = 2.4, dT = 0.01;
 
         while (T < Tmax) {
                 double beta = 1/T;
                 H_val = evolve_islat2d(lat, beta, 1000*lat.N, global_J1, global_J2,
                                 global_h, H_val);
-                printf("%f, %f\n", T, M_avg(lat, beta, 1000, &H_val));
+                printf("%f, %f\n", T, M_avg(lat, beta, 50000, &H_val));
                 fprintf(stderr, "T: %f\n", T);
+                islat2d_randomize(lat);
                 T += dT;
         }
         free_islat2d(lat);

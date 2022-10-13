@@ -24,8 +24,9 @@ Writen By: Rohn Chatterjee  (https://github.com/liupold)
 -dT <Float>	Change of temperature per dF [default: 0]
 -dF <Integer>	Frame Spacing [default: 120]
 -fps <Float>	Frames per second [default: 60]
--W <Integer>	Width of the window [default: 1366]
--H <Integer>	Height of the window [default: 768]
--R <Integer>	Number of row in lattice [default: 512]
--C <Integer>	Number of column in lattice [default: 512]
+-W <Integer>	Width of the window [default: 500]
+-H <Integer>	Height of the window [default: 500]
+-R <Integer>	Number of row in lattice [default: 100]
+-C <Integer>	Number of column in lattice [default: 100]
+-Seed <Integer>	Random Seed [default: Unix epoc]
 ```
