@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -O2 -Wall -lm -Wextra
+CFLAGS = -O2 -Wall -lm -Wextra -Wpedantic -Werror
 DIR_SRC = src
 DIR_BUILD = build
 DIR_BINs = bins
@@ -19,6 +19,7 @@ graphs: ising-2d.o
 	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/chi-vs-T-graph.c -o $(DIR_BINs)/chi-vs-T -lpthread
 	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/m-vs-T-graph.c -o $(DIR_BINs)/m-vs-T
 	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/binder-cumulant.c -o $(DIR_BINs)/binder-cumulant
+	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/binder-cumulant-2.c -o $(DIR_BINs)/binder-cumulant-2
 
 
 dirs:

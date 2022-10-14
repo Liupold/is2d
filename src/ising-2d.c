@@ -23,7 +23,7 @@ void disp_islat2d(islat2d A) {
                 }
         }
         printf("\n\n");
-};
+}
 
 
 islat2d rand_islat2d(int r, int c) {
