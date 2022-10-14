@@ -18,7 +18,7 @@ ising-2d.o: dirs
 graphs: ising-2d.o
 	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/chi-vs-T-graph.c -o $(DIR_BINs)/chi-vs-T -lpthread
 	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/m-vs-T-graph.c -o $(DIR_BINs)/m-vs-T
-	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/binder-cumulant.c -o $(DIR_BINs)/binder-cumulant.c
+	$(CC) $(CFLAGS) -I $(DIR_SRC) $(DIR_BUILD)/ising-2d.o graphs-analysis/binder-cumulant.c -o $(DIR_BINs)/binder-cumulant
 
 
 dirs:

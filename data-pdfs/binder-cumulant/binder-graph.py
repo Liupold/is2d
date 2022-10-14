@@ -24,8 +24,8 @@ fig, ax = plt.subplots(figsize=(11.69,8.27))
 for L in L_array:
     plt.plot(*final_data_dict[L].T, '-o', label=f"L = {L}")
 
-Tc = 2.2615
-plt.axvline(x=Tc, color='b', label='T = 2.2615')
+Tc = 2 / np.log(1 + np.sqrt(2))
+plt.axvline(x=Tc, color='b', label=f'T = {Tc:.5f}')
 plt.title("Binder Cumulant (10 seed avg)")
 plt.legend()
 plt.grid()
