@@ -23,7 +23,7 @@ double Mag(islat2d lat) {
 double binder_cumulant(islat2d lat, double beta, int MCsteps, double *H_prev) {
         double Mag_2=0, Mag_4=0, mag;
         for (int mc_step=0; mc_step < MCsteps; mc_step++) {
-                *H_prev = evolve_islat2d(lat, beta, lat.N,
+                *H_prev = evolve_islat2d(lat, beta, 1,
                                 global_J1, global_J2, global_h, *H_prev);
                 mag = Mag(lat);
                 mag = mag * mag;
@@ -57,7 +57,7 @@ void one_seed_loop(int ith) {
         //fprintf(stderr, "Latice:%dx%d (run-%d)\n", lat.r, lat.c, ith);
         while (T < Tmax) {
                 double beta = 1/T;
-                H_val = evolve_islat2d(lat, beta, 10000*lat.N, global_J1, global_J2,
+                H_val = evolve_islat2d(lat, beta, 10000, global_J1, global_J2,
                                 global_h, H_val);
                 fprintf(fptr, "%f, %f\n", T, binder_cumulant(lat, beta, 10000, &H_val));
                 //fprintf(stderr, "T:%f, U:%f\n", T, binder_cumulant(lat, beta, 10000, &H_val));

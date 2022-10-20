@@ -4,6 +4,7 @@
 #include <time.h>
 #include <math.h>
 #include "ising-2d.h"
+#include "mtwister.h"
 
 void disp_islat2d(islat2d A) {
         int n = 0;
@@ -13,8 +14,7 @@ void disp_islat2d(islat2d A) {
                 for (int j=0; j < A.c; j++) {
                         printf("%2d", A.S[n]);
                         if (j < A.c - 1) {
-                                printf(",\t");
-                        }
+                                printf(",\t"); }
                         n++;
                 }
                 printf("|");
@@ -79,39 +79,39 @@ void save_islat2d(islat2d A, char* filename) {
         fclose(fpr);
 }
 
-double ising2d_del_H(islat2d l, int i, double J1, double J2, double h) {
+int ising2d_del_H(const islat2d* l, int i, int J1, int J2, double h) {
         double ret_value = 0;
         int n, s, e, w;
 
-        n = i - l.r;
-        s = i + l.r;
+        n = i - l->r;
+        s = i + l->r;
         e = i + 1;
         w = i -1;
 
-        if (i % l.c == 0) {
-                w = l.c + w;
+        if (i % l->c == 0) {
+                w = l->c + w;
         }
 
-        if ((i + 1) % l.c == 0) {
-                e = e - l.c;
+        if ((i + 1) % l->c == 0) {
+                e = e - l->c;
         }
 
-        if (i < l.c) {
-                n = l.N + n;
+        if (i < l->c) {
+                n = l->N + n;
         }
 
-        if (i + l.c >= l.N) {
-                s = s - l.N;
+        if (i + l->c >= l->N) {
+                s = s - l->N;
         }
 
-        ret_value -= J1*l.S[i] * (l.S[e] + l.S[w]);
-        ret_value -= J2*l.S[i] * (l.S[n] + l.S[s]);
-        ret_value -= h*l.S[i];
+        ret_value -= J1*l->S[i] * (l->S[e] + l->S[w]);
+        ret_value -= J2*l->S[i] * (l->S[n] + l->S[s]);
+        ret_value -= h*l->S[i];
         return 2*ret_value;
 }
 
 
-double ising2d_H(islat2d l, double J1, double J2, double h) {
+double ising2d_H(const islat2d l, int J1, int J2, double h) {
         double ret_value = 0;
         int n, w; // iter;
 
@@ -138,27 +138,27 @@ double ising2d_H(islat2d l, double J1, double J2, double h) {
 
 
 double evolve_islat2d(islat2d Lat, double beta, int steps,
-                double j1, double j2, double h, double H_prev) {
-        int i;
-        double H_next, H_curr = H_prev;
+                int j1, int j2, double h, double H_prev, MTRand r) {
+        int del_H;
+        double H_curr = H_prev;
+        double exp_array[15];
+        for (int j=0; j < 15; j++) {
+                exp_array[j] = exp(-beta * j);
+        }
 
         for (int iter=1; iter<=steps; iter++) {
-                i = rand()%(Lat.N); // choose i
+        for (int k=0; k<8; k++) {
+        for (int i=k; i<Lat.N; i+=8) {
+                //i = rand()%(Lat.N); // choose i
                 Lat.S[i] *= -1; // try fliping
-                H_next = H_curr + ising2d_del_H(Lat, i, j1, j2, h);
+                del_H = ising2d_del_H(&Lat, i, j1, j2, h);
 
-                if (H_next <= H_curr) { // Del E < 0
-                        H_curr = H_next; // finalize the flip
-                } else { // Del E > 0
-                        if ((double)rand() / (double)RAND_MAX
-                                        < exp(-beta * (H_next - H_curr))) {
-                                H_curr = H_next; // swap with (exp(-beta * del E))
-                        } else {
+                if (del_H >  0) { // Del E > 0
+                        if (genRand(&r) > exp_array[del_H]) {
                                 Lat.S[i] *= -1; // swap back
-                        }
-                }
+                }}
                 // printf("%5.5f\r", (double)iter / (double)steps);
-        }
+        }}}
         return H_curr;
 }
 

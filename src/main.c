@@ -4,6 +4,7 @@
 #include <time.h>
 #include<GL/glut.h>
 #include "ising-2d.h"
+#include "mtwister.h"
 
 islat2d lat;
 double global_H, global_J1, global_J2,
@@ -14,6 +15,8 @@ int global_dstep, global_dF, global_SEED;
 
 int global_width = 500, global_height = 500,
     global_row = 100, global_col = 100;
+
+MTRand global_RandGen;
 
 void render() {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -41,7 +44,7 @@ void display(int id) {
 
         clock_gettime(CLOCK_MONOTONIC_RAW, &start);
         global_H = evolve_islat2d(lat, global_beta, global_dstep,
-                        global_J1, global_J2, global_h, global_H);
+                        global_J1, global_J2, global_h, global_H, global_RandGen);
         if ((id == global_dF) && (global_dT != 0)) {
                 global_T += global_dT; global_beta = (1/global_T);
                 printf("Temp: %f\n\r", global_T);
@@ -70,7 +73,7 @@ void help() {
         printf("-j1 <Float>\tInteraction strength (left-right) [default: 1]\n");
         printf("-j2 <Float>\tInteraction strength (up-down) [default: 1]\n");
         printf("-h <Float>\tExternal Magnetic field interaction [default: 0]\n");
-        printf("-dS <Integer>\tNumber of steps per frame [default: 100000]\n");
+        printf("-dS <Integer>\tNumber of (R*C),steps per frame [default: 1]\n");
         printf("-dT <Float>\tChange of temperature per dF [default: 0]\n");
         printf("-dF <Integer>\tFrame Spacing [default: 120]\n");
         printf("-fps <Float>\tFrames per second [default: 60]\n");
@@ -109,7 +112,7 @@ int main(int argc, char** argv) {
         // hamiltons param
         global_J1 = 1; global_J2 = 1; global_h = 0;
         global_H = ising2d_H(lat, global_J1, global_J2, global_h);
-        global_dstep = 1e5;
+        global_dstep = 1;
         global_T = 1;
         global_frame_time=1000/60; // 60 fps
 
@@ -122,7 +125,7 @@ int main(int argc, char** argv) {
         }
         global_beta = 1/global_T;
         lat = rand_islat2d(global_row, global_col);
-        srand(global_SEED);
+        global_RandGen = seedRand(global_SEED);
 
         // init opengl
         glutInit(&argc, argv);

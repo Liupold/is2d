@@ -1,3 +1,6 @@
+#pragma once
+#include "mtwister.h"
+
 // Technical
 struct ising_2d_latice{
         int8_t* S;
@@ -12,7 +15,7 @@ void free_islat2d(islat2d Lat);
 void save_islat2d(islat2d A, char* filename);
 
 // Physics
-double ising2d_del_H(islat2d l, int i, double J1, double J2, double h);
-double ising2d_H(islat2d l, double J1, double J2, double h);
+int ising2d_del_H(const islat2d* l, int i, int J1, int J2, double h);
+double ising2d_H(const islat2d l, int J1, int J2, double h);
 double evolve_islat2d(islat2d Lat, double beta, int steps,
-                double j1, double j2, double h, double H_prev);
+                int j1, int j2, double h, double H_prev, MTRand r);
